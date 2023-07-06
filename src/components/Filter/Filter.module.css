@@ -1,0 +1,33 @@
+.filter {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.label__filter {
+  text-align: center;
+  font-weight: 500;
+  font-family: cursive;
+  font-size: 16px;
+  line-height: 1.16;
+  letter-spacing: 0.01em;
+  margin-bottom: 10px;
+}
+.filter__input {
+  height: 20px;
+  border-radius: 8px;
+  padding-left: 10px;
+  font-weight: 500;
+  font-family: cursive;
+  font-size: 16px;
+  border: 2px solid rgb(16, 204, 16);
+  transition: color 250ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.label__filter:hover {
+  color: rgb(174, 33, 33);
+}
