@@ -2,81 +2,94 @@ import React from 'react';
 import css from './FormData.module.css';
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
-const INITIAL_STATE = {
-  name: '',
-  number: '',
-};
+export function FormData({ onSubmit }) {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-export class FormData extends React.Component {
-  state = { ...INITIAL_STATE };
-
-  handleChange = event => {
+  const handleChange = event => {
     const { name, value } = event.target;
-    this.setState({ [name]: value });
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      case 'number':
+        setNumber(value);
+        break;
+      default:
+        return;
+    }
   };
 
-  handleSubmit = event => {
+  const handleSubmit = event => {
     event.preventDefault();
-    this.props.onSubmit(this.state);
-    this.resetInput();
+    onSubmit({ name, number });
+    resetInput();
   };
 
-  resetInput = () => {
-    this.setState(INITIAL_STATE);
+  const resetInput = () => {
+    switch ({ name, number }) {
+      case 'name':
+        setName('');
+        break;
+      case 'number':
+        setNumber('');
+        break;
+      default:
+        return;
+    }
   };
 
-  render() {
-    const { name, number } = this.state;
-    const idName = nanoid();
-    const idNumber = nanoid();
-    return (
-      <>
-        <h2 className={css.phonebook__title}>PHONEBOOK</h2>
-        <div className={css.main__form}>
-          <form onSubmit={this.handleSubmit}>
-            <div className={css.input__form}>
-              <label className={css.form__label} htmlFor={idName}>
-                Name
-              </label>
-              <input
-                className={css.input__change}
-                onChange={this.handleChange}
-                type="text"
-                name="name"
-                id={idName}
-                value={name}
-                pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-                title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-                required
-              />
-            </div>
-            <div className={css.input__form}>
-              <label className={css.form__label} htmlFor={idNumber}>
-                Number
-              </label>
-              <input
-                className={css.input__change}
-                onChange={this.handleChange}
-                type="tel"
-                name="number"
-                id={idNumber}
-                value={number}
-                pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-                title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-                required
-              />
-            </div>
-            <div className={css.form__button}>
-              <button className={css.submit__button} type="submit">
-                Add contact
-              </button>
-            </div>
-          </form>
-        </div>
-      </>
-    );
-  }
+  const idName = nanoid();
+  const idNumber = nanoid();
+
+  return (
+    <>
+      <h2 className={css.phonebook__title}>PHONEBOOK</h2>
+      <div className={css.main__form}>
+        <form onSubmit={handleSubmit}>
+          <div className={css.input__form}>
+            <label className={css.form__label} htmlFor={idName}>
+              Name
+            </label>
+            <input
+              className={css.input__change}
+              onChange={handleChange}
+              type="text"
+              name="name"
+              id={idName}
+              value={name}
+              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+              required
+            />
+          </div>
+          <div className={css.input__form}>
+            <label className={css.form__label} htmlFor={idNumber}>
+              Number
+            </label>
+            <input
+              className={css.input__change}
+              onChange={handleChange}
+              type="tel"
+              name="number"
+              id={idNumber}
+              value={number}
+              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+              required
+            />
+          </div>
+          <div className={css.form__button}>
+            <button className={css.submit__button} type="submit">
+              Add contact
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
+  );
 }
 
 FormData.propTypes = {

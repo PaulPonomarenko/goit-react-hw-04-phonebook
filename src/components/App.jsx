@@ -4,26 +4,15 @@ import { Contacts } from './Contacts/Contacts';
 import { nanoid } from 'nanoid';
 import { Filter } from './Filter/Filter';
 import defaultContact from '../contacts.json';
+import { useState, useEffect } from 'react';
 
 export class App extends React.Component {
   state = {
     contacts: defaultContact,
     filter: '',
   };
-
-  componentDidMount() {
-    const storage = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(storage);
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
-    }
-  }
-
-  componentDidUpdate(_, prevState) {
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
+  // const [contacts, setContacts] = useState(defaultContact);
+  // const [filter, setFilter] = useState('');
 
   onSubmit = ({ name, number }) => {
     const contact = {
@@ -60,6 +49,26 @@ export class App extends React.Component {
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
   };
+  componentDidMount() {
+    const storage = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(storage);
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+  // return (
+  //   <>
+  //     <FormData onSubmit={onSubmit} />
+  //     <Filter value={filter} onChange={this.changeFilter} />
+  //     <Contacts contacts={visibleContact} onDelete={this.deleteContact} />
+  //   </>
+  // );
 
   render() {
     const { filter } = this.state;
